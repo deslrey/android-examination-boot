@@ -1,13 +1,33 @@
 package org.deslre;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.deslre.entity.po.UserInfo;
+import org.deslre.service.UserInfoService;
+import org.deslre.utils.SHA256Util;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
 
 @SpringBootTest
 class DeslreShopBootApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Resource
+    private UserInfoService userInfoService;
 
+    @Test
+    void contextLoads() {
+        LambdaQueryWrapper<UserInfo> queryWrapper = new LambdaQueryWrapper<UserInfo>().select(UserInfo::getEmail, UserInfo::getPassword).eq(UserInfo::getEmail, "1").eq(UserInfo::getPassword, "1");
+        UserInfo userInfo = userInfoService.getOne(queryWrapper);
+        System.out.println("userInfo = " + userInfo);
+
+    }
+
+
+    @Test
+    void name() {
+        UserInfo status = UserInfo.builder().status(1).build();
+        System.out.println("status = " + status);
+
+    }
 }

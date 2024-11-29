@@ -22,15 +22,16 @@ public class StringUtil extends StringUtils {
 
     public static boolean isEmpty(String str) {
 
-        if (null == str || str.isEmpty() || "null".equals(str) || "\u0000".equals(str)) {
+        if (null == str || str.isEmpty() || "null".equals(str) || "\u0000".equals(str))
             return true;
-        } else return str.trim().isEmpty();
+        else
+            return str.trim().isEmpty();
     }
 
     public static boolean isNotEmpty(String str) {
-        if (null == str || str.isEmpty() || "null".equals(str) || "\u0000".equals(str)) {
+        if (null == str || str.isEmpty() || "null".equals(str) || "\u0000".equals(str))
             return false;
-        } else return !str.trim().isEmpty();
+        else return !str.trim().isEmpty();
     }
 
     public static <T> boolean isNull(T clazz) {

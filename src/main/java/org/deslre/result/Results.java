@@ -58,6 +58,13 @@ public class Results<T> {
         return build(null, 200, message);
     }
 
+    /**
+     * 操作成功
+     */
+    public static <T> Results<T> ok(T data, String message) {
+        return build(data, 200, message);
+    }
+
 
     /**
      * 操作失败

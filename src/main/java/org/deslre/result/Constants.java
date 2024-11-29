@@ -33,5 +33,6 @@ public class Constants {
     public static final Integer REDIS_KEY_EXPIRES_FIVE_MIN = REDIS_KEY_EXPIRES_ONE_MIN * 5;
     public static final String NODE_TYPE_PERSON = "person";
     public static final String NODE_TYPE_ENTITY = "entity";
+    public static final String NICKNAME_DESLRE = "deslre";
 
 }

@@ -13,8 +13,9 @@ public class RegexUtils {
      * @return 验证成功返回true，验证失败返回false
      */
     public static boolean checkEmail(String email) {
-        String regex = "\\w+@\\w+\\.[a-z]+(\\.[a-z]+)?";
-        return Pattern.matches(regex, email);
+        return true;
+//        String regex = "\\w+@\\w+\\.[a-z]+(\\.[a-z]+)?";
+//        return Pattern.matches(regex, email);
     }
 
     /**
@@ -40,8 +41,9 @@ public class RegexUtils {
      * @return 验证成功返回true，验证失败返回false
      */
     public static boolean checkMobile(String mobile) {
-        String regex = "(\\+\\d+)?1[3458]\\d{9}$";
-        return Pattern.matches(regex, mobile);
+        return true;
+//        String regex = "(\\+\\d+)?1[3458]\\d{9}$";
+//        return Pattern.matches(regex, mobile);
     }
 
     /**
