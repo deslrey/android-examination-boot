@@ -42,12 +42,10 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             throw new DeslreException("账户或者密码不能为空");
         }
 
-        String encrypt = SHA256Util.encrypt(passWord);
-
         if (RegexUtils.checkEmail(userName)) {
-            return loginEmail(userName, encrypt);
+            return loginEmail(userName, passWord);
         } else if (RegexUtils.checkMobile(userName)) {
-            return loginMobile(userName, encrypt);
+            return loginMobile(userName, passWord);
         }
         return Results.fail("登录失败,请输入正确的用户名进行登录");
     }
