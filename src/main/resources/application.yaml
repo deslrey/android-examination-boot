@@ -7,7 +7,7 @@ spring:
   application:
     name: DeslreShopBoot
   datasource:
-    url: jdbc:mysql://localhost:3306/az?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/english-app?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     password: 200381
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
