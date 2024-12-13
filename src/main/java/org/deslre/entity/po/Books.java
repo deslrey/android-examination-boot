@@ -57,7 +57,7 @@ public class Books implements Serializable {
     /**
      * 该单词书的描述
      */
-    private String describe;
+    private String description;
 
     /**
      * 是否删除 
