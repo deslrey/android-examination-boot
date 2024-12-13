@@ -64,5 +64,6 @@ public class Books implements Serializable {
      */
     private Boolean exist;
 
-
+    public Books() {
+    }
 }

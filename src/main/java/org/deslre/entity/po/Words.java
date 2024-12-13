@@ -48,12 +48,12 @@ public class Words implements Serializable {
     /**
      * 美式发音
      */
-    private String amerPronun;
+    private String amerPronoun;
 
     /**
      * 英式发音
      */
-    private String britishPronun;
+    private String britishPronoun;
 
     /**
      * 词性变化
@@ -85,5 +85,6 @@ public class Words implements Serializable {
      */
     private Boolean exist;
 
-
+    public Words() {
+    }
 }
