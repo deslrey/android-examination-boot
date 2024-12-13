@@ -85,6 +85,4 @@ public class Words implements Serializable {
      */
     private Boolean exist;
 
-    public Words() {
-    }
 }

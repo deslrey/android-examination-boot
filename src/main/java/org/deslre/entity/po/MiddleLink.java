@@ -59,6 +59,4 @@ public class MiddleLink implements Serializable {
      */
     private Boolean exist;
 
-    public MiddleLink() {
-    }
 }
