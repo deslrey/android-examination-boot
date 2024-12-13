@@ -2,7 +2,7 @@ package org.deslre.service.impl;
 
 import org.deslre.entity.po.MiddleLink;
 import org.deslre.mapper.MiddleLinkMapper;
-import org.deslre.service.IMiddleLinkService;
+import org.deslre.service.MiddleLinkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-12-13
  */
 @Service
-public class MiddleLinkServiceImpl extends ServiceImpl<MiddleLinkMapper, MiddleLink> implements IMiddleLinkService {
+public class MiddleLinkServiceImpl extends ServiceImpl<MiddleLinkMapper, MiddleLink> implements MiddleLinkService {
 
 }

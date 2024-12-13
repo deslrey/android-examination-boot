@@ -2,7 +2,7 @@ package org.deslre.service.impl;
 
 import org.deslre.entity.po.Books;
 import org.deslre.mapper.BooksMapper;
-import org.deslre.service.IBooksService;
+import org.deslre.service.BooksService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-12-13
  */
 @Service
-public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements IBooksService {
+public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements BooksService {
 
 }

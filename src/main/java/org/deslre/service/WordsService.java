@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author author
  * @since 2024-12-13
  */
-public interface IWordsService extends IService<Words> {
+public interface WordsService extends IService<Words> {
 
 }
