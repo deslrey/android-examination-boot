@@ -58,7 +58,7 @@ public class Words implements Serializable {
     /**
      * 词性变化
      */
-    private String change;
+    private String wordChange ;
 
     /**
      * 例句

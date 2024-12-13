@@ -9,7 +9,7 @@
         <result column="word_sum" property="wordSum" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
-        <result column="describe" property="describe" />
+        <result column="description" property="description" />
         <result column="exist" property="exist" />
     </resultMap>
 
