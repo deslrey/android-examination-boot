@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.awt.print.Book;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,88 @@ public class addWordTest {
     private MiddleLinkService middleLinkService;
     @Resource
     private CodesService codesService;
-    @Resource
-    private CategoryService categoryService;
+
+    String jsonPath = "D:\\dem\\qwerty-learner\\public\\";
+
+    @Test
+    void insertWordData() throws Exception {
+
+        String path = "E:\\de\\1.json";
+
+        List<DictionaryItem> dictionaryItems = DictionaryLoader.loadDictionaryData(path);
+
+        int sum = 0;
+        for (DictionaryItem item : dictionaryItems) {
+            String all = jsonPath + item.getUrl().replaceAll("/", "\\\\");
+            item.setUrl(all);
+            readJson(item);
+            log.info("当前第 {} 本书插入完成 ======> {}", ++sum, item.getName());
+//            break;
+        }
+
+    }
+
+
+    private void readJson(DictionaryItem item) {
+        String jsonPath = item.getUrl();
+        String americanPronunciation;
+        String britishPronunciation;
+        String transStr;
+
+        List<String> trans;
+
+        Books books;
+        Words words;
+        MiddleLink middleLink;
+
+        LambdaQueryWrapper<Words> wq;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> data = objectMapper.readValue(new File(jsonPath), new TypeReference<List<Map<String, Object>>>() {
+            });
+            List<String> stringList = item.getTags();
+            String tags = String.join("&", stringList);
+
+            books = Books.builder().bookName(item.getName()).category(item.getCategory()).description(item.getDescription()).tags(tags)
+                    .wordSum(item.getLength()).language(item.getLanguage()).languageCategory(item.getLanguageCategory()).exist(true).build();
+
+            booksService.save(books);
+
+
+            for (Map<String, Object> entry : data) {
+                String name = (String) entry.get("name");
+
+                wq = new LambdaQueryWrapper<Words>().eq(Words::getWord, name);
+                Words wordsServiceOne = wordsService.getOne(wq);
+                if (wordsServiceOne != null) {
+                    middleLink = MiddleLink.builder().bookId(books.getId()).wordId(wordsServiceOne.getId()).exist(true).build();
+                    middleLinkService.save(middleLink);
+                    continue;
+                }
+
+                trans = (List<String>) entry.get("trans");
+
+                transStr = String.join("<deslre>", trans);
+
+                transStr = transStr.replaceAll("，", ",").replaceAll("（", "(").replaceAll("）", ")").replaceAll("；", ";");
+                System.out.println("单词 : " + name);
+                System.out.println("释义 : " + transStr);
+                System.out.println(" -------------------------------------------------- ");
+
+                americanPronunciation = SoundUtil.getAmericanPronunciation(name);
+                britishPronunciation = SoundUtil.getBritishPronunciation(name);
+
+                words = Words.builder().word(name).trans(transStr).amerPronoun(americanPronunciation).britishPronoun(britishPronunciation).exist(true).build();
+                wordsService.save(words);
+                middleLink = MiddleLink.builder().bookId(books.getId()).wordId(words.getId()).exist(true).build();
+                middleLinkService.save(middleLink);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     void readJSON() {
@@ -53,7 +134,6 @@ public class addWordTest {
 
         Codes codes;
         Books books;
-        Category category;
 
         String americanPronunciation;
         String britishPronunciation;
@@ -64,15 +144,8 @@ public class addWordTest {
 
             stringList = dict.getTags();
             join = String.join("&", stringList);
-
-            category = Category.builder().parentCategory(CategoryResult.CODE).categoryName(join).build();
-
-            categoryService.save(category);
-
-
             jsonPath = dict.getUrl();
-            books = Books.builder().categoryId(category.getId()).wordSum(dict.getLength()).bookName(dict.getName()).description(dict.getDescription()).exist(true).build();
-
+            books = Books.builder().wordSum(dict.getLength()).bookName(dict.getName()).description(dict.getDescription()).exist(true).build();
             booksService.save(books);
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -84,7 +157,6 @@ public class addWordTest {
                 for (Map<String, Object> entry : data) {
                     String name = (String) entry.get("name");
                     trans = (List<String>) entry.get("trans");
-
 
                     transStr = String.join("<deslre>", trans);
 
