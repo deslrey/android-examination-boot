@@ -40,6 +40,11 @@ public class Books implements Serializable {
     private String bookName;
 
     /**
+     * 分类id
+     */
+    private Integer categoryId;
+
+    /**
      * 单词数量
      */
     private Integer wordSum;

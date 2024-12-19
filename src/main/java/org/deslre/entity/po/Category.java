@@ -3,10 +3,7 @@ package org.deslre.entity.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import java.io.Serializable;
-
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -20,11 +17,10 @@ import lombok.experimental.Accessors;
  * @since 2024-12-19
  */
 @Data
-@Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("codes")
-public class Codes implements Serializable {
+@TableName("category")
+public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,28 +31,9 @@ public class Codes implements Serializable {
     private Integer id;
 
     /**
-     * 单词书的id
+     * 分类名称
      */
-    private Integer bookId;
-
-    /**
-     * 单词
-     */
-    private String word;
-
-    /**
-     *  翻译
-     */
-    private String trans;
-
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
-
-    /**
-     * 是否删除
-     */
-    private Boolean exist;
+    private String categoryName;
 
 
 }
