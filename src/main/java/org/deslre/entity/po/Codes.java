@@ -3,6 +3,7 @@ package org.deslre.entity.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -13,7 +14,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author author
@@ -45,14 +46,31 @@ public class Codes implements Serializable {
     private String word;
 
     /**
-     *  翻译
+     * 翻译
      */
     private String trans;
 
+
+    /**
+     * 美式发音
+     */
+    private String amerPronoun;
+
+    /**
+     * 英式发音
+     */
+    private String britishPronoun;
+
+
+    /**
+     * 添加日期
+     */
     private LocalDateTime createTime;
 
+    /**
+     * 修改日期
+     */
     private LocalDateTime updateTime;
-
     /**
      * 是否删除
      */
