@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="org.deslre.entity.po.Category">
         <id column="id" property="id" />
         <result column="category_name" property="categoryName" />
+        <result column="parent_category" property="parentCategory" />
     </resultMap>
 
 </mapper>

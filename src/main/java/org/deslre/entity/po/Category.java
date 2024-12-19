@@ -3,14 +3,16 @@ package org.deslre.entity.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author author
@@ -34,6 +36,11 @@ public class Category implements Serializable {
      * 分类名称
      */
     private String categoryName;
+
+    /**
+     * 大类
+     */
+    private String parentCategory;
 
 
 }
