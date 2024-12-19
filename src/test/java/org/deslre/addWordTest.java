@@ -3,12 +3,13 @@ package org.deslre;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.deslre.entity.po.Books;
-import org.deslre.entity.po.MiddleLink;
-import org.deslre.entity.po.Words;
-import org.deslre.service.BooksService;
-import org.deslre.service.MiddleLinkService;
-import org.deslre.service.WordsService;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.apache.bcel.classfile.Code;
+import org.deslre.entity.po.*;
+import org.deslre.result.CategoryResult;
+import org.deslre.service.*;
+import org.deslre.utils.DictListExample;
+import org.deslre.utils.SoundUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -25,6 +26,7 @@ import java.util.Map;
  * Version: 1.0
  */
 
+@Slf4j
 @SpringBootTest
 public class addWordTest {
 
@@ -34,83 +36,78 @@ public class addWordTest {
     private WordsService wordsService;
     @Resource
     private MiddleLinkService middleLinkService;
+    @Resource
+    private CodesService codesService;
+    @Resource
+    private CategoryService categoryService;
 
     @Test
-    void insert() {
-        String bookName = "2024考研英语红宝书(下)";
-        String jsonPath = "D:\\dem\\qwerty-learner\\public\\dicts\\2024HongBao_T2.json";
+    void readJSON() {
+        List<Dict> dictList = DictListExample.getDictList();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            List<Map<String, Object>> data = objectMapper.readValue(
-                    new File(jsonPath),
-                    new TypeReference<List<Map<String, Object>>>() {
-                    }
-            );
+        String jsonPath;
+
+        List<String> trans;
+        List<String> stringList;
+        String join;
+
+        Codes codes;
+        Books books;
+        Category category;
+
+        String americanPronunciation;
+        String britishPronunciation;
+
+        String transStr;
+
+        for (Dict dict : dictList) {
+
+            stringList = dict.getTags();
+            join = String.join("&", stringList);
+
+            category = Category.builder().parentCategory(CategoryResult.CODE).categoryName(join).build();
+
+            categoryService.save(category);
 
 
-            Words words;
-            MiddleLink middleLink;
+            jsonPath = dict.getUrl();
+            books = Books.builder().categoryId(category.getId()).wordSum(dict.getLength()).bookName(dict.getName()).description(dict.getDescription()).exist(true).build();
 
-            int sum = 0;
-            Books books = Books.builder().wordSum(sum).bookName(bookName).description("2024考研英语红宝书(下)").exist(true).build();
             booksService.save(books);
 
-            StringBuilder sb = new StringBuilder();
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                List<Map<String, Object>> data = objectMapper.readValue(new File(jsonPath), new TypeReference<List<Map<String, Object>>>() {
+                });
 
-            LambdaQueryWrapper<Words> eq;
-            String name;
-            Words wordsServiceOne;
-            List<String> trans;
-            String usPhone;
-            String ukPhone;
-            int count = 0;
-            for (Map<String, Object> entry : data) {
-                count++;
-                name = (String) entry.get("name");
-                eq = new LambdaQueryWrapper<Words>().eq(Words::getWord, name);
-                wordsServiceOne = wordsService.getOne(eq);
-                if (wordsServiceOne != null) {
-                    System.err.println("当前词已存在 ======> " + name);
-                    middleLink = MiddleLink.builder().bookId(books.getId()).wordId(wordsServiceOne.getId()).exist(true).build();
-                    middleLinkService.save(middleLink);
-                    sb = new StringBuilder();
-                    continue;
+
+                for (Map<String, Object> entry : data) {
+                    String name = (String) entry.get("name");
+                    trans = (List<String>) entry.get("trans");
+
+
+                    transStr = String.join("<deslre>", trans);
+
+                    transStr = transStr.replaceAll("，", ",").replaceAll("（", "(").replaceAll("）", ")").replaceAll("；", ";");
+                    System.out.println("单词 : " + name);
+                    System.out.println("释义 : " + transStr);
+                    System.out.println(" -------------------------------------------------- ");
+
+                    americanPronunciation = SoundUtil.getAmericanPronunciation(name);
+                    britishPronunciation = SoundUtil.getBritishPronunciation(name);
+
+                    codes = Codes.builder().bookId(books.getId()).word(name).trans(transStr).amerPronoun(americanPronunciation).britishPronoun(britishPronunciation).exist(true).build();
+                    codesService.save(codes);
                 }
-                trans = (List<String>) entry.get("trans");
-                usPhone = (String) entry.get("usphone");
-                ukPhone = (String) entry.get("ukphone");
 
-                System.out.println("单词 : " + name);
-                System.out.println("释义 : ");
-                for (String tran : trans) {
-                    tran = tran.replaceAll("，", ",").replaceAll("（", "(").replaceAll("）", ")").replaceAll("；", ";");
-                    System.out.println(" --- " + tran);
-                    sb.append(tran).append("<deslre>");
-                }
-                System.out.println("美式发音 : " + usPhone);
-                System.out.println("英式发音 : " + ukPhone);
-                System.out.println(" -------------------------------------------------- ");
+                System.out.println("插入完成 ======> " + dict.getName());
 
-                words = Words.builder().word(name).trans(sb.toString()).amerPronoun(usPhone).britishPronoun(ukPhone).exist(true).build();
-
-                wordsService.save(words);
-
-                middleLink = MiddleLink.builder().bookId(books.getId()).wordId(words.getId()).exist(true).build();
-                middleLinkService.save(middleLink);
-                sb = new StringBuilder();
+            } catch (Exception e) {
+                log.error("读取JSON文件出现异常 ======> {}", dict);
+                e.printStackTrace();
             }
-
-            books.setWordSum(count);
-            booksService.updateById(books);
-            System.out.println("插入完成");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-
     }
-
 }
 
 
