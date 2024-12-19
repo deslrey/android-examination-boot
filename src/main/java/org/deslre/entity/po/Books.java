@@ -3,6 +3,7 @@ package org.deslre.entity.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -13,7 +14,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author author
@@ -40,14 +41,34 @@ public class Books implements Serializable {
     private String bookName;
 
     /**
-     * 分类id
+     * 分类
      */
-    private Integer categoryId;
+    private String category;
+
+    /**
+     * 该单词书的描述
+     */
+    private String description;
+
+    /**
+     * 标签分类
+     */
+    private String tags;
 
     /**
      * 单词数量
      */
     private Integer wordSum;
+
+    /**
+     * 语言归属
+     */
+    private String language;
+
+    /**
+     * 语言分类
+     */
+    private String languageCategory;
 
     /**
      * 添加日期
@@ -60,12 +81,7 @@ public class Books implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 该单词书的描述
-     */
-    private String description;
-
-    /**
-     * 是否删除 
+     * 是否删除 (1: 存在, 0: 删除)
      */
     private Boolean exist;
 

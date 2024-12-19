@@ -30,9 +30,34 @@ public class BooksVO {
     private String bookName;
 
     /**
+     * 分类
+     */
+    private String category;
+
+    /**
+     * 该单词书的描述
+     */
+    private String description;
+
+    /**
+     * 标签分类
+     */
+    private String tags;
+
+    /**
      * 单词数量
      */
     private Integer wordSum;
+
+    /**
+     * 语言归属
+     */
+    private String language;
+
+    /**
+     * 语言分类
+     */
+    private String languageCategory;
 
     /**
      * 添加日期
@@ -43,12 +68,6 @@ public class BooksVO {
      * 更新日期
      */
     private LocalDateTime updateTime;
-
-    /**
-     * 该单词书的描述
-     */
-    private String description;
-
 
 
 }

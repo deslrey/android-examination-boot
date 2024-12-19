@@ -4,13 +4,17 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.deslre.entity.po.Books">
-        <id column="id" property="id" />
-        <result column="book_name" property="bookName" />
-        <result column="word_sum" property="wordSum" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="description" property="description" />
-        <result column="exist" property="exist" />
+        <id column="id" property="id"/>
+        <result column="book_name" property="bookName"/>
+        <result column="category" property="category"/>
+        <result column="description" property="description"/>
+        <result column="tags" property="tags"/>
+        <result column="word_sum" property="wordSum"/>
+        <result column="language" property="language"/>
+        <result column="language_category" property="languageCategory"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="exist" property="exist"/>
     </resultMap>
 
 </mapper>
