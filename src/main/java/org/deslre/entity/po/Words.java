@@ -46,9 +46,19 @@ public class Words implements Serializable {
     private String trans;
 
     /**
+     * 美式音标
+     */
+    private String amer;
+
+    /**
      * 美式发音
      */
     private String amerPronoun;
+
+    /**
+     * 英式音标
+     */
+    private String british;
 
     /**
      * 英式发音
@@ -58,7 +68,7 @@ public class Words implements Serializable {
     /**
      * 词性变化
      */
-    private String wordChange ;
+    private String wordChange;
 
     /**
      * 例句

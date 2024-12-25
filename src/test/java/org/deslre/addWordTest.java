@@ -45,16 +45,17 @@ public class addWordTest {
     @Test
     void insertWordData() throws Exception {
 
-        String path = "E:\\de\\1.json";
+        String path = "E:\\de\\2.json";
 
         List<DictionaryItem> dictionaryItems = DictionaryLoader.loadDictionaryData(path);
 
         int sum = 0;
         for (DictionaryItem item : dictionaryItems) {
-            String all = jsonPath + item.getUrl().replaceAll("/", "\\\\");
-            item.setUrl(all);
-            readJson(item);
-            log.info("当前第 {} 本书插入完成 ======> {}", ++sum, item.getName());
+            System.out.println("item = " + item);
+//            String all = jsonPath + item.getUrl().replaceAll("/", "\\\\");
+//            item.setUrl(all);
+//            readJson(item);
+//            log.info("当前第 {} 本书插入完成 ======> {}", ++sum, item.getName());
 //            break;
         }
 
@@ -66,6 +67,8 @@ public class addWordTest {
         String americanPronunciation;
         String britishPronunciation;
         String transStr;
+        String usphone;
+        String ukphone;
 
         List<String> trans;
 
@@ -100,6 +103,8 @@ public class addWordTest {
                 }
 
                 trans = (List<String>) entry.get("trans");
+                usphone = (String) entry.get("usphone");
+                ukphone = (String) entry.get("ukphone");
 
                 transStr = String.join("<deslre>", trans);
 
@@ -111,13 +116,14 @@ public class addWordTest {
                 americanPronunciation = SoundUtil.getAmericanPronunciation(name);
                 britishPronunciation = SoundUtil.getBritishPronunciation(name);
 
-                words = Words.builder().word(name).trans(transStr).amerPronoun(americanPronunciation).britishPronoun(britishPronunciation).exist(true).build();
+                words = Words.builder().word(name).trans(transStr).amer(usphone).amerPronoun(americanPronunciation).british(ukphone).britishPronoun(britishPronunciation).exist(true).build();
                 wordsService.save(words);
                 middleLink = MiddleLink.builder().bookId(books.getId()).wordId(words.getId()).exist(true).build();
                 middleLinkService.save(middleLink);
             }
 
         } catch (Exception e) {
+            log.error("出现异常,异常的书籍是  ======> {}", item);
             e.printStackTrace();
         }
     }
@@ -145,7 +151,8 @@ public class addWordTest {
             stringList = dict.getTags();
             join = String.join("&", stringList);
             jsonPath = dict.getUrl();
-            books = Books.builder().wordSum(dict.getLength()).bookName(dict.getName()).description(dict.getDescription()).exist(true).build();
+            books = Books.builder().wordSum(dict.getLength()).bookName(dict.getName()).description(dict.getDescription()).category(dict.getCategory()).language(dict.getLanguage())
+                    .languageCategory(dict.getLanguageCategory()).tags(join).exist(true).build();
             booksService.save(books);
 
             ObjectMapper objectMapper = new ObjectMapper();
