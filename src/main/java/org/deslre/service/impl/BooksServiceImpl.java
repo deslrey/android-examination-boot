@@ -9,6 +9,7 @@ import org.deslre.result.Results;
 import org.deslre.service.BooksService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.deslre.utils.StaticUtil;
+import org.deslre.utils.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,20 @@ public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements
 
         List<BooksVO> convertedList = BookConvert.INSTANCE.convertList(booksList);
 
+        return Results.ok(convertedList);
+    }
+
+    @Override
+    public Results<List<BooksVO>> getCategory(String category) {
+        if (StringUtil.isEmpty(category)) {
+            return Results.fail("查询参数不能为空");
+        }
+        LambdaQueryWrapper<Books> queryWrapper = new LambdaQueryWrapper<Books>().eq(Books::getCategory, category).eq(Books::getExist, StaticUtil.TRUE);
+        List<Books> booksList = list(queryWrapper);
+        if (booksList == null || booksList.isEmpty()) {
+            return Results.fail("暂无该类单词书");
+        }
+        List<BooksVO> convertedList = BookConvert.INSTANCE.convertList(booksList);
         return Results.ok(convertedList);
     }
 }

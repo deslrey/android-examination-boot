@@ -18,4 +18,6 @@ import java.util.List;
 public interface BooksService extends IService<Books> {
 
     Results<List<BooksVO>> getAllBooks();
+
+    Results<List<BooksVO>> getCategory(String category);
 }

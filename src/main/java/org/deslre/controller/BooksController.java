@@ -5,6 +5,7 @@ import org.deslre.entity.vo.BooksVO;
 import org.deslre.result.Results;
 import org.deslre.service.BooksService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,13 @@ public class BooksController {
     private BooksService booksService;
 
     @GetMapping("getAllBooks")
-    public Results<List<BooksVO>> getAllBooks(){
+    public Results<List<BooksVO>> getAllBooks() {
         return booksService.getAllBooks();
+    }
+
+    @PostMapping("getCategory")
+    public Results<List<BooksVO>> getCategory(String category) {
+        return booksService.getCategory(category);
     }
 
 }
