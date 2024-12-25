@@ -29,9 +29,15 @@ public class CodesController {
     @Resource
     private CodesService codesService;
 
-    @GetMapping("getCodeData")
+    @PostMapping("getCodeData")
     public Results<List<CodeVO>> getCodeData(Integer id) {
         return codesService.getCodeData(id);
     }
 
+
+    @PostMapping("/getPageData")
+    public Results<List<CodeVO>> getPageData(Integer bookId, Integer page, Integer size) {
+        return codesService.getPageData(bookId, page, size);
+    }
 }
+

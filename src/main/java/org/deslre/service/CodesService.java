@@ -18,4 +18,6 @@ import java.util.List;
 public interface CodesService extends IService<Codes> {
 
     Results<List<CodeVO>> getCodeData(Integer id);
+
+    Results<List<CodeVO>> getPageData(Integer bookId, Integer page, Integer size);
 }
