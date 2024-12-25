@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 import java.awt.print.Book;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -129,8 +130,16 @@ public class addWordTest {
     }
 
     @Test
-    void readJSON() {
-        List<Dict> dictList = DictListExample.getDictList();
+    void readJSON() throws IOException {
+        String path = "E:\\de\\2.json";
+
+        List<DictionaryItem> dictList = DictionaryLoader.loadDictionaryData(path);
+
+        for (DictionaryItem item : dictList) {
+            System.out.println("item = " + item);
+            String all = jsonPath + item.getUrl().replaceAll("/", "\\\\");
+            item.setUrl(all);
+        }
 
         String jsonPath;
 
@@ -146,7 +155,7 @@ public class addWordTest {
 
         String transStr;
 
-        for (Dict dict : dictList) {
+        for (DictionaryItem dict : dictList) {
 
             stringList = dict.getTags();
             join = String.join("&", stringList);
@@ -157,7 +166,7 @@ public class addWordTest {
 
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                List<Map<String, Object>> data = objectMapper.readValue(new File(jsonPath), new TypeReference<List<Map<String, Object>>>() {
+                List<Map<String, Object>> data = objectMapper.readValue(new File(dict.getUrl()), new TypeReference<List<Map<String, Object>>>() {
                 });
 
 
