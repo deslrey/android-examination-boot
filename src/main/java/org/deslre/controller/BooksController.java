@@ -44,4 +44,9 @@ public class BooksController {
         return booksService.getLanguage(language);
     }
 
+    @PostMapping("getLanguageCategory")
+    public Results<List<BooksVO>> getLanguageCategory(String languageCategory) {
+        return booksService.getLanguageCategory(languageCategory);
+    }
+
 }

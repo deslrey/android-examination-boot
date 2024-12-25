@@ -67,6 +67,20 @@ public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements
         List<BooksVO> convertedList = BookConvert.INSTANCE.convertList(booksList);
         return Results.ok(convertedList);
     }
+
+    @Override
+    public Results<List<BooksVO>> getLanguageCategory(String languageCategory) {
+        if (StringUtil.isEmpty(languageCategory)) {
+            return Results.fail("查询参数异常");
+        }
+        LambdaQueryWrapper<Books> queryWrapper = new LambdaQueryWrapper<Books>().eq(Books::getLanguageCategory, languageCategory).eq(Books::getExist, StaticUtil.TRUE);
+        List<Books> booksList = list(queryWrapper);
+        if (booksList == null || booksList.isEmpty()) {
+            return Results.fail("当前分类暂无书籍");
+        }
+        List<BooksVO> convertedList = BookConvert.INSTANCE.convertList(booksList);
+        return Results.ok(convertedList);
+    }
 }
 
 
