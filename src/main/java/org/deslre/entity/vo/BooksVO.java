@@ -59,15 +59,5 @@ public class BooksVO {
      */
     private String languageCategory;
 
-    /**
-     * 添加日期
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新日期
-     */
-    private LocalDateTime updateTime;
-
 
 }

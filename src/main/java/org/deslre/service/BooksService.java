@@ -2,6 +2,10 @@ package org.deslre.service;
 
 import org.deslre.entity.po.Books;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.deslre.entity.vo.BooksVO;
+import org.deslre.result.Results;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BooksService extends IService<Books> {
 
+    Results<List<BooksVO>> getAllBooks();
 }
