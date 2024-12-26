@@ -5,6 +5,7 @@ import org.deslre.entity.po.DictionaryItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DictionaryLoader {
@@ -18,15 +19,22 @@ public class DictionaryLoader {
     }
 
     public static void main(String[] args) {
-        try {
-            List<DictionaryItem> dictionaryItems = loadDictionaryData("E:\\de\\1.json");
+        List<String> list = new ArrayList<>();
+        list.add("一");
+        list.add("二");
+        list.add("三");
+        String join = String.join("&", list);
+        System.out.println("join = " + join);
 
-            // 打印数据
-            for (DictionaryItem item : dictionaryItems) {
-                System.out.println("item = " + item);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            List<DictionaryItem> dictionaryItems = loadDictionaryData("E:\\de\\1.json");
+//
+//            // 打印数据
+//            for (DictionaryItem item : dictionaryItems) {
+//                System.out.println("item = " + item);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

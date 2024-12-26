@@ -10,6 +10,7 @@ import org.deslre.result.CategoryResult;
 import org.deslre.service.*;
 import org.deslre.utils.DictListExample;
 import org.deslre.utils.SoundUtil;
+import org.deslre.utils.StringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -46,20 +47,87 @@ public class addWordTest {
     @Test
     void insertWordData() throws Exception {
 
-        String path = "E:\\de\\2.json";
+//        String path = "E:\\de\\哈萨克语哈拼词典.json";
+//        String path = "E:\\de\\日语词典.json";
+//        String path = "E:\\de\\印尼语高频词汇.json";
+        String path = "E:\\de\\德语词典.json";
 
         List<DictionaryItem> dictionaryItems = DictionaryLoader.loadDictionaryData(path);
 
         int sum = 0;
         for (DictionaryItem item : dictionaryItems) {
             System.out.println("item = " + item);
-//            String all = jsonPath + item.getUrl().replaceAll("/", "\\\\");
-//            item.setUrl(all);
-//            readJson(item);
-//            log.info("当前第 {} 本书插入完成 ======> {}", ++sum, item.getName());
+            String all = jsonPath + item.getUrl().replaceAll("/", "\\\\");
+            item.setUrl(all);
+            otherLanguage(item);
+            log.info("当前第 {} 本书插入完成 ======> {}", ++sum, item.getName());
 //            break;
         }
 
+    }
+
+    private void otherLanguage(DictionaryItem item) {
+        String jsonPath = item.getUrl();
+        String americanPronunciation;
+        String britishPronunciation;
+        String transStr;
+        List<String> trans;
+
+        Books books;
+        Words words;
+        MiddleLink middleLink;
+
+        LambdaQueryWrapper<Words> wq;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> data = objectMapper.readValue(new File(jsonPath), new TypeReference<List<Map<String, Object>>>() {
+            });
+            List<String> stringList = item.getTags();
+            String tags = String.join("&", stringList);
+
+            books = Books.builder().bookName(item.getName()).category(item.getCategory()).description(item.getDescription()).tags(tags)
+                    .wordSum(item.getLength()).language(item.getLanguage()).languageCategory(item.getLanguageCategory()).exist(true).build();
+
+            booksService.save(books);
+
+
+            for (Map<String, Object> entry : data) {
+                String name = (String) entry.get("name");
+//                String notation = (String) entry.get("notation");
+
+                if (StringUtil.isEmpty(name))
+                    continue;
+
+                trans = (List<String>) entry.get("trans");
+
+
+                transStr = String.join("<deslre>", trans);
+
+                transStr = transStr.replaceAll("，", ",").replaceAll("（", "(").replaceAll("）", ")").replaceAll("；", ";");
+
+//                String kazakh = SoundUtil.getKazakh(name);
+//                String japan = SoundUtil.getJapan(name);
+//                String indonesia = SoundUtil.getIndonesia(name);
+                String german = SoundUtil.getGerman(name);
+
+
+//                System.out.println("单词 ======》   " + name);
+//                System.out.println("释义 ======》   " + transStr);
+//                System.out.println("符号 ======》   " + notation);
+//                System.out.println("发音 ======》   " + indonesia);
+
+
+                words = Words.builder().bookId(books.getId()).word(name).trans(transStr).pronounce(german).exist(true).build();
+                wordsService.save(words);
+                middleLink = MiddleLink.builder().bookId(books.getId()).wordId(words.getId()).exist(true).build();
+                middleLinkService.save(middleLink);
+            }
+
+        } catch (Exception e) {
+            log.error("出现异常,异常的书籍是  ======> {}", item);
+            e.printStackTrace();
+        }
     }
 
 
@@ -95,13 +163,15 @@ public class addWordTest {
             for (Map<String, Object> entry : data) {
                 String name = (String) entry.get("name");
 
-                wq = new LambdaQueryWrapper<Words>().eq(Words::getWord, name);
-                Words wordsServiceOne = wordsService.getOne(wq);
-                if (wordsServiceOne != null) {
-                    middleLink = MiddleLink.builder().bookId(books.getId()).wordId(wordsServiceOne.getId()).exist(true).build();
-                    middleLinkService.save(middleLink);
+                if (StringUtil.isEmpty(name))
                     continue;
-                }
+//                wq = new LambdaQueryWrapper<Words>().eq(Words::getWord, name);
+//                Words wordsServiceOne = wordsService.getOne(wq);
+//                if (wordsServiceOne != null) {
+//                    middleLink = MiddleLink.builder().bookId(books.getId()).wordId(wordsServiceOne.getId()).exist(true).build();
+//                    middleLinkService.save(middleLink);
+//                    continue;
+//                }
 
                 trans = (List<String>) entry.get("trans");
                 usphone = (String) entry.get("usphone");
@@ -110,14 +180,14 @@ public class addWordTest {
                 transStr = String.join("<deslre>", trans);
 
                 transStr = transStr.replaceAll("，", ",").replaceAll("（", "(").replaceAll("）", ")").replaceAll("；", ";");
-                System.out.println("单词 : " + name);
-                System.out.println("释义 : " + transStr);
-                System.out.println(" -------------------------------------------------- ");
+//                System.out.println("单词 : " + name);
+//                System.out.println("释义 : " + transStr);
+//                System.out.println(" -------------------------------------------------- ");
 
                 americanPronunciation = SoundUtil.getAmericanPronunciation(name);
                 britishPronunciation = SoundUtil.getBritishPronunciation(name);
 
-                words = Words.builder().word(name).trans(transStr).amer(usphone).amerPronoun(americanPronunciation).british(ukphone).britishPronoun(britishPronunciation).exist(true).build();
+                words = Words.builder().bookId(books.getId()).word(name).trans(transStr).amer(usphone).amerPronoun(americanPronunciation).british(ukphone).britishPronoun(britishPronunciation).exist(true).build();
                 wordsService.save(words);
                 middleLink = MiddleLink.builder().bookId(books.getId()).wordId(words.getId()).exist(true).build();
                 middleLinkService.save(middleLink);
@@ -131,7 +201,7 @@ public class addWordTest {
 
     @Test
     void readJSON() throws IOException {
-        String path = "E:\\de\\2.json";
+        String path = "E:\\de\\编程字典.json";
 
         List<DictionaryItem> dictList = DictionaryLoader.loadDictionaryData(path);
 
