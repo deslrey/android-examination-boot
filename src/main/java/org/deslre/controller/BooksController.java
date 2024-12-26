@@ -1,6 +1,7 @@
 package org.deslre.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.deslre.entity.vo.BooksVO;
 import org.deslre.result.Results;
 import org.deslre.service.BooksService;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author author
  * @since 2024-12-13
  */
+@Slf4j
 @RestController
 @RequestMapping("/books")
 public class BooksController {
@@ -51,6 +53,7 @@ public class BooksController {
 
     @GetMapping("getAllWordBooks")
     public Results<List<BooksVO>> getAllWordBooks() {
+        log.error("getAllWordBooks 接收到了请求");
         return booksService.getAllWordBooks();
     }
 
