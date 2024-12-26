@@ -24,4 +24,6 @@ public interface BooksService extends IService<Books> {
     Results<List<BooksVO>> getLanguage(String language);
 
     Results<List<BooksVO>> getLanguageCategory(String languageCategory);
+
+    Results<List<BooksVO>> getAllWordBooks();
 }

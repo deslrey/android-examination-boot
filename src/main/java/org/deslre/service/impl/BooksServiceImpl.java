@@ -81,6 +81,19 @@ public class BooksServiceImpl extends ServiceImpl<BooksMapper, Books> implements
         List<BooksVO> convertedList = BookConvert.INSTANCE.convertList(booksList);
         return Results.ok(convertedList);
     }
+
+    @Override
+    public Results<List<BooksVO>> getAllWordBooks() {
+        LambdaQueryWrapper<Books> queryWrapper = new LambdaQueryWrapper<Books>().ne(Books::getLanguageCategory, "code").eq(Books::getExist, StaticUtil.TRUE);
+        List<Books> booksList = list(queryWrapper);
+        if (booksList == null || booksList.isEmpty()) {
+            return Results.fail("获取全部单词书失败");
+        }
+
+        List<BooksVO> convertedList = BookConvert.INSTANCE.convertList(booksList);
+
+        return Results.ok(convertedList);
+    }
 }
 
 

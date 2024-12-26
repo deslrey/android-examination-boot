@@ -49,4 +49,9 @@ public class BooksController {
         return booksService.getLanguageCategory(languageCategory);
     }
 
+    @GetMapping("getAllWordBooks")
+    public Results<List<BooksVO>> getAllWordBooks() {
+        return booksService.getAllWordBooks();
+    }
+
 }
