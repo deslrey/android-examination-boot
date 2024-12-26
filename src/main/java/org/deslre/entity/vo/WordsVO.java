@@ -21,14 +21,29 @@ public class WordsVO {
     private Integer id;
 
     /**
+     * 书籍id
+     */
+    private Integer bookId;
+
+    /**
      * 单词
      */
     private String word;
 
     /**
+     * 符号
+     */
+    private String notation;
+
+    /**
      * 翻译
      */
     private String trans;
+
+    /**
+     * 除英语以外的语言发音
+     */
+    private String pronounce;
 
     /**
      * 美式发音
@@ -43,7 +58,7 @@ public class WordsVO {
     /**
      * 词性变化
      */
-    private String wordChange ;
+    private String wordChange;
 
     /**
      * 例句

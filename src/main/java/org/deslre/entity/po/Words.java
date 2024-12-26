@@ -36,14 +36,29 @@ public class Words implements Serializable {
     private Integer id;
 
     /**
+     * 书籍id
+     */
+    private Integer bookId;
+
+    /**
      * 单词
      */
     private String word;
 
     /**
+     * 符号
+     */
+    private String notation;
+
+    /**
      * 翻译
      */
     private String trans;
+
+    /**
+     * 除英语以外的语言发音
+     */
+    private String pronounce;
 
     /**
      * 美式音标
